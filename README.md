@@ -1,162 +1,264 @@
 # Camelion++
 
-**Camelion++** is a Notepad++-style source code editor for Linux.
+**A Notepad++ alternative for Linux.**
 
-It grew out of the *Camelion* study, an extraction and analysis of the
-Notepad++ v8.9.9.1 installer. Notepad++ itself is a Win32 program, so Camelion++
-does not try to run it. It is a native GTK 3 editor built on the same
-engines Notepad++ uses, **Scintilla 5.6.9** and **Lexilla 5.5.5**, and it reads the
-Notepad++ data files that the study extracted:
-
-| Notepad++ file (from the installer) | Used by Camelion++ for |
-|---|---|
-| `langs.model.xml` | languages, file extensions, keywords, comment markers |
-| `stylers.model.xml`, `themes/*.xml` | syntax colours, global styles, 22 themes (Monokai, Zenburn, Solarized, ...) |
-| `autoCompletion/*.xml` | function/keyword completion and call tips |
-| `functionList/*.xml` | the Function List panel (same regex parsers) |
-| `nppPluginList` (JSON format, signed container) | Plugins Admin |
+Camelion++ is a free, open-source source code and text editor that looks and works like
+Notepad++, but runs natively on Linux. It uses the same editing engines as Notepad++,
+**Scintilla** and **Lexilla**, and reads Notepad++'s own configuration files. Syntax colours, themes,
+auto-completion and the function list therefore behave the way Notepad++ users expect.
 
 ![Camelion++ with the Monokai theme and the Function List](docs/screenshots/editor-monokai-functionlist.png)
 
-## Features
+Camelion++ started as *Camelion*, a self-study of how Notepad++ is built and packaged.
+It is an independent project, not affiliated with or endorsed by the Notepad++ project, and it is
+not related to Notepadqq.
 
-- Tabs with drag-reorder, middle-click close, dirty/read-only markers, tab context menu
-- 95 languages with the Notepad++ lexer configuration (keyword sets, sub-styles, fold properties); Markdown added
-- Themes and a Style Configurator (theme + font override); dark GTK chrome follows the editor theme
-- Encodings: UTF-8, UTF-8-BOM, UTF-16 LE/BE BOM, 21 ANSI character sets; "Encode in" (reinterpret) and "Convert to"
-- EOL detection and conversion (CRLF / LF / CR)
-- Find / Replace / Find in Files / Mark with Normal, Extended (`\n \t \x..`) and Regular-expression modes, Count,
-  Find All (current / all open documents), Replace All in all opened documents, Replace in Files, highlight all matches,
-  Search Results panel (F7, F4/Shift+F4)
-- Smart highlighting, brace matching, bookmarks (Ctrl+F2/F2), 5 token styles, change-history margin, code folding
-- Line operations (duplicate, move, join, split, sort ×8, remove duplicates/empty lines), case conversion ×6,
-  blank operations, comment/uncomment (line & block), column editor, column mode (Alt+drag), date/time insertion
-- Auto-completion (functions + words + paths), parameter hints, auto-indent, optional auto-close
-- Function List panel, Macro record/playback/save/run-N-times, Run menu with `$(FULL_CURRENT_PATH)`-style variables
-- Session restore with **session snapshot** (unsaved and untitled documents survive restarts, like Notepad++)
-- External change detection, Monitoring (tail -f), printing, Summary, file rename/trash, open in terminal/file manager
-- Single instance (`camelion++ file.c:120` jumps to line 120 in the running window), Notepad++-compatible command line
-  (`-n<line> -c<col> -l<lang> -ro -nosession -noPlugin -multiInst`)
-- **Plugins**: Linux `.so` plugins with a Notepad++-compatible API, and **Plugins Admin** driven by the
-  **nppPluginList** format (see below)
+---
 
-## Installing
+## Contents
 
-- **Arch Linux:** `packaging/arch/PKGBUILD` builds from the `v1.0.0` release: download it into an empty folder
-  whose path has no spaces and run `makepkg -si`.
-- **Debian / Ubuntu:** download `camelion-plus-plus_1.0.0_amd64.deb` from the
-  [releases](https://github.com/SHOPNO105/CamelionPlusPlus/releases) and run `sudo apt install ./camelion-plus-plus_1.0.0_amd64.deb`.
-- **Anything else:** build from source as below.
+- [What it can do](#what-it-can-do)
+- [Install on Ubuntu or Debian](#install-on-ubuntu-or-debian)
+- [Install on Arch Linux](#install-on-arch-linux)
+- [First steps](#first-steps)
+- [Uninstalling](#uninstalling)
+- [Plugins](#plugins)
+- [Building from source (other distributions)](#building-from-source-other-distributions)
+- [Licence](#licence)
 
-## Building
+---
 
-Ubuntu/Debian:
+## What it can do
+
+**Editing**
+- Tabs (drag to reorder, middle-click to close), with unsaved files shown in red
+- Syntax highlighting for 95 languages, plus Markdown, using Notepad++'s language definitions
+- 22 colour themes from Notepad++ (Monokai, Solarized, Zenburn, Obsidian, ...), with a dark interface for dark themes
+- Code folding, brace matching, smart highlighting of the selected word, bookmarks, change-history margin
+- Auto-completion of functions, words and file paths, function parameter hints, auto-indent
+- Column (block) selection with Alt+drag, multi-caret editing and the Column Editor
+- Line tools: duplicate, move, join, split, sort (8 ways), remove duplicate/empty lines
+- Case conversion, comment/uncomment, trim spaces, tabs ↔ spaces
+
+**Search**
+- Find, Replace, Find in Files, and Mark, in normal, extended (`\n`, `\t`) or regular-expression mode
+- "Find All" results panel; jump between results with F4 / Shift+F4
+
+**Files**
+- Encodings: UTF-8, UTF-8 with BOM, UTF-16, and 21 older character sets (Windows-1252, ISO-8859, Shift-JIS, ...)
+- Windows, Unix and Mac line endings, detected and convertible
+- Session restore: your open files, **including unsaved changes and new documents**, come back after a restart
+- Warns when a file changes on disk; "Monitoring" mode follows log files like `tail -f`
+
+**Tools**
+- Function List panel, macros (record / play / save), Run menu for external commands, printing
+- Plugins, installed with one click from **Plugins Admin**
+
+| Light theme | Plugins Admin |
+|---|---|
+| ![Editor](docs/screenshots/editor-light.png) | ![Plugins Admin](docs/screenshots/plugins-admin.png) |
+
+---
+
+## Install on Ubuntu or Debian
+
+**Supported:** Ubuntu 24.04 or newer, Debian 12 or newer (64-bit PC, `amd64`).
+
+### Option 1: install the ready-made package (Ubuntu 24.04+)
+
+The `.deb` package on the [Releases](https://github.com/SHOPNO105/CamelionPlusPlus/releases) page is built on
+Ubuntu 24.04. Open a terminal and run:
 
 ```bash
-sudo apt install build-essential cmake ninja-build pkg-config libgtk-3-dev \
-     libcurl4-openssl-dev libarchive-dev libssl-dev libtinyxml2-dev nlohmann-json3-dev
-cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
-cmake --build build
-./build/camelion++                      # runs from the build tree, bundled plugins included
-sudo cmake --install build              # or: cd build && cpack  =>  .deb and .tar.gz
+wget https://github.com/SHOPNO105/CamelionPlusPlus/releases/download/v1.0.0/camelion-plus-plus_1.0.0_amd64.deb
+sudo apt install ./camelion-plus-plus_1.0.0_amd64.deb
 ```
 
-Fedora: `gtk3-devel libcurl-devel libarchive-devel openssl-devel tinyxml2-devel json-devel`.
-Arch: `gtk3 curl libarchive openssl tinyxml2 nlohmann-json`.
+`apt` installs everything Camelion++ needs automatically. Then start **Camelion++** from your
+applications menu, or type `camelion++` in a terminal.
 
-Scintilla and Lexilla are vendored in `third_party/` (taken from the Notepad++ source tree,
-GTK backend included). Lexilla's `LexUser.cxx` was patched to build without `windows.h`.
+If `apt` reports missing or too-old packages, which can happen on Debian or older releases, use Option 2.
 
-## Where things live
+### Option 2: build your own package (Debian 12+, Ubuntu 24.04+)
 
-| Path | Content |
+This compiles Camelion++ on your machine and turns it into a `.deb`, so it can be removed cleanly later.
+
+**1. Install the build tools and libraries:**
+
+```bash
+sudo apt update
+sudo apt install build-essential cmake ninja-build pkg-config git \
+     libgtk-3-dev libcurl4-openssl-dev libarchive-dev libssl-dev \
+     libtinyxml2-dev nlohmann-json3-dev
+```
+
+**2. Download the source and build** (takes a few minutes):
+
+```bash
+git clone https://github.com/SHOPNO105/CamelionPlusPlus.git
+cd CamelionPlusPlus
+cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
+cmake --build build
+```
+
+**3. Make the package and install it:**
+
+```bash
+cd build
+cpack -G DEB
+sudo apt install ./camelion-plus-plus_1.0.0_amd64.deb
+```
+
+---
+
+## Install on Arch Linux
+
+Arch users build Camelion++ with the included `PKGBUILD`, so `pacman` manages it like any other package.
+
+> **Important:** use a folder whose path has **no spaces**. `makepkg` fails in paths such as
+> `~/My Projects/...`.
+
+### Option 1: with makepkg (recommended)
+
+```bash
+sudo pacman -S --needed base-devel git
+git clone https://github.com/SHOPNO105/CamelionPlusPlus.git
+cd CamelionPlusPlus/packaging/arch
+makepkg -si
+```
+
+- `makepkg` downloads the `v1.0.0` source, installs the dependencies (gtk3, curl, libarchive, openssl,
+  tinyxml2, cmake, ninja, nlohmann-json), compiles, and installs the package.
+- When it asks, enter your password and confirm with **Y**.
+- Compiling takes about 3–10 minutes.
+
+To rebuild after a failed attempt, start clean with `makepkg -siC`.
+
+### Option 2: build and install manually
+
+```bash
+sudo pacman -S --needed base-devel git cmake ninja pkgconf gtk3 curl libarchive openssl tinyxml2 nlohmann-json
+git clone https://github.com/SHOPNO105/CamelionPlusPlus.git
+cd CamelionPlusPlus
+cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
+cmake --build build
+sudo cmake --install build
+```
+
+This way `pacman` does not know about Camelion++. See [Uninstalling](#uninstalling).
+
+---
+
+## First steps
+
+Check that it is installed:
+
+```bash
+camelion++ --version
+camelion++ --check-pluginlist     # should say:  signature : verified
+```
+
+Open files from the terminal:
+
+```bash
+camelion++ notes.txt main.cpp       # open files
+camelion++ main.cpp:120             # open at line 120
+camelion++ -lpython script          # force a language
+camelion++ --help                   # all options
+```
+
+If Camelion++ is already open, these files open as new tabs in the same window.
+
+**Useful shortcuts** (the same as Notepad++)
+
+| Keys | Action | Keys | Action |
+|---|---|---|---|
+| Ctrl+F / Ctrl+H | Find / Replace | Ctrl+D | Duplicate line |
+| Ctrl+Shift+F | Find in Files | Ctrl+Shift+↑ / ↓ | Move line up / down |
+| F3 / Shift+F3 | Find next / previous | Ctrl+Q | Comment / uncomment |
+| Ctrl+G | Go to line | Ctrl+F2 / F2 | Toggle / next bookmark |
+| Alt+0 / Alt+Shift+0 | Fold / unfold all | Ctrl+Space | Auto-complete |
+| F5 | Run a command | F11 | Full screen |
+
+**Themes:** Settings → Theme, or Settings → Style Configurator to change the font too.
+
+**Compile and run a C++ file:** press **F5** and enter a command that opens your terminal. For Konsole:
+
+```
+konsole -e bash -c 'cd "$(CURRENT_DIRECTORY)" && g++ -std=c++17 -Wall -O2 "$(FILE_NAME)" -o "$(NAME_PART)" && ./"$(NAME_PART)"; read -p "Press Enter"'
+```
+
+With GNOME Terminal, use `gnome-terminal -- bash -c '...'` instead. Click **Save...** in that dialog to
+keep the command in the **Run** menu.
+
+**Your settings** are stored in `~/.config/camelion++/`. Plugins you install go to `~/.local/share/camelion++/plugins/`.
+
+---
+
+## Uninstalling
+
+| Installed with | Remove with |
 |---|---|
-| `~/.config/camelion++/config.xml` | settings (GUIConfig entries), recent files, saved macros and run commands |
-| `~/.config/camelion++/session.xml` | session; unsaved content is snapshotted in `~/.local/share/camelion++/backup/` |
-| `~/.config/camelion++/langs.xml`, `stylers.xml` | optional user copies (Settings > Edit langs.xml / stylers.xml) |
-| `~/.config/camelion++/themes/` | your own themes (any Notepad++ theme XML works) |
-| `~/.config/camelion++/plugins/Config/` | plugin settings; also where a test plugin list may be put |
-| `~/.local/share/camelion++/plugins/<Name>/<Name>.so` | plugins installed by you / by Plugins Admin |
-| `<prefix>/lib/camelion++/plugins/` | system plugins, and `Config/nppPluginList.so` (the signed list) |
-| `<prefix>/share/camelion++/` | the Notepad++ data files |
+| `.deb` package (Ubuntu / Debian) | `sudo apt remove camelion-plus-plus` |
+| `makepkg` (Arch) | `sudo pacman -R camelion-plus-plus` |
+| `cmake --install` (manual) | `sudo xargs rm < build/install_manifest.txt` (run in the source folder) |
+
+To also delete your settings and plugins:
+`rm -rf ~/.config/camelion++ ~/.local/share/camelion++`
+
+---
 
 ## Plugins
 
-The plugin ABI mirrors Notepad++'s `PluginInterface.h`: the same entry points
-(`setInfo`, `getName`, `getFuncsArray`, `beNotified`, `messageProc`), the same `NppData`,
-`FuncItem` and `ShortcutKey` structures, the same `NPPM_*` / `NPPN_*` numbers and
-`LangType` values, and Scintilla messages sent to the Scintilla handle. Strings are UTF-8 and
-there is no Win32 `SendMessage`; `NppData` carries a function pointer instead, and a
-`::SendMessage` look-alike is available with `#define CAMELION_SENDMESSAGE_SHIM`. Plugins that
-only talk to Scintilla and Notepad++ through messages usually port with small changes.
-GTK plugins can dock panels (`CAMM_ADDPANEL`).
+Camelion++ comes with three plugins:
 
-Bundled plugins:
-
-| Plugin | What it is |
+| Plugin | What it does |
 |---|---|
-| **Converter** (`CamConverter`) | ASCII ↔ HEX, the idea behind Notepad++'s bundled NppConverter |
-| **MIME Tools** (`CamMimeTools`) | Base64 / URL / Quoted-printable, the idea behind Notepad++'s bundled mimeTools |
-| **Document List** (`CamDocList`) | a GTK side panel listing open documents (panel API demo) |
+| **Converter** | ASCII ↔ HEX conversion |
+| **MIME Tools** | Base64, URL and Quoted-printable encode / decode |
+| **Document List** | Side panel listing all open documents |
 
-See **[docs/PLUGIN_SDK.md](docs/PLUGIN_SDK.md)** for writing, building, packaging and publishing plugins.
+More plugins can be installed from **Plugins → Plugins Admin**. It checks the plugin list's digital
+signature and each download's checksum before installing anything.
 
-## nppPluginList support
+Notepad++ plugins for Windows (`.dll` files, such as NppExec) **cannot** run on Linux. Camelion++ plugins are
+Linux `.so` files written for Camelion++. Anyone can write one:
 
-Plugins Admin works exactly like the Notepad++ one, from the same JSON format:
+- **Writing plugins:** [docs/PLUGIN_SDK.md](docs/PLUGIN_SDK.md). The API mirrors Notepad++'s, so many plugins port easily.
+- **The plugin list (CamPlugin):** the [`CamPlugin/`](CamPlugin/) folder holds the list that Plugins Admin uses. To add
+  your plugin, open a pull request there.
 
-1. It reads `nppPluginList.so`, the Linux counterpart of `nppPluginList.dll`, from
-   `~/.config/camelion++/plugins/Config/` or `<prefix>/lib/camelion++/plugins/Config/`.
-   The JSON lives in the `.npp_pluginlist` ELF section and an **Ed25519 signature** in
-   `.npp_pluginlist_sig`. Camelion++ reads them as data and never loads the library. A list whose
-   signature doesn't verify against the public key compiled into Camelion++
-   (`packaging/keys/pluginlist-ed25519-pub.pem`) is refused. This is the analogue of Notepad++
-   checking the DLL's Authenticode signature.
-2. It only accepts lists for its own architecture (`linux-x64`, `linux-arm64`). A Windows list
-   (`"arch": "64"`) is rejected with an explanation, because Windows DLLs cannot run on Linux.
-3. **Install / Update**: it downloads the zip over HTTPS (proxy variables honoured), checks the
-   **SHA-256 against the list's `id`**, extracts it safely (no absolute paths, no `..`, no links),
-   checks that `<folder-name>.so` is an ELF object for this CPU with the required exports,
-   installs it atomically, and **loads new plugins immediately**. Updates and removals offer a
-   restart that keeps the session.
-4. `camelion-compatible-versions` (or `npp-compatible-versions`) hides plugins that don't
-   support the running version ("Incompatible" tab).
-5. **Test mode**: an unsigned `~/.config/camelion++/plugins/Config/nppPluginList.json` takes
-   precedence, as in Notepad++'s debug mode. A banner shows, and `file://` URLs are allowed.
-   `camelion++ --check-pluginlist` prints which list is used and whether it verified.
+---
 
-The companion repository **[CamPlugin/](CamPlugin/)** folder (the nppPluginList port) contains `src/pl.linux-x64.json`,
-`src/pl.linux-arm64.json`, the schema update, the ELF-aware `validator.py`, the CMake build
-and signing of `nppPluginList.so`, and a CI workflow.
+## Building from source (other distributions)
 
-### Signing key
+Camelion++ needs a C++17 compiler, CMake ≥ 3.16, and the development files for
+GTK 3, libcurl (≥ 7.85), libarchive, OpenSSL, tinyxml2 and nlohmann-json.
 
-`packaging/keys/pluginlist-ed25519-pub.pem` is the public half of the key that signed the
-included `packaging/nppPluginList/nppPluginList.so`. Whoever holds the private half controls
-which plugins your users are offered, so keep it out of the repository (for example in a CI
-secret). To use your own key:
+These package names are believed correct but have not been tested yet:
+
+| Distribution | Install the requirements |
+|---|---|
+| Fedora | `sudo dnf install gcc-c++ cmake ninja-build gtk3-devel libcurl-devel libarchive-devel openssl-devel tinyxml2-devel json-devel` |
+| openSUSE | `sudo zypper install gcc-c++ cmake ninja gtk3-devel libcurl-devel libarchive-devel libopenssl-devel tinyxml2-devel nlohmann_json-devel` |
+
+Then:
 
 ```bash
-openssl genpkey -algorithm ed25519 -out pluginlist-private.pem
-openssl pkey -in pluginlist-private.pem -pubout -out pluginlist-pub.pem
-cmake -S . -B build -DCAMELION_PLUGINLIST_PUBKEY=$PWD/pluginlist-pub.pem
+cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
+cmake --build build
+./build/camelion++            # run without installing, or:
+sudo cmake --install build
 ```
 
-and build `nppPluginList.so` with `-DPLUGINLIST_SIGNING_KEY=pluginlist-private.pem`.
+Technical details (file locations, the plugin system, how the signed plugin list works, and the
+differences from Notepad++) are in [docs/TECHNICAL.md](docs/TECHNICAL.md).
 
-## Differences from Notepad++
-
-- Linux/GTK 3 only; no Windows plugins (DLLs) can be loaded.
-- One editing view: there is no split "other view" yet (`_scintillaSecondHandle` aliases the main view).
-- User Defined Languages are not supported yet (the UDL lexer is built; the UDL dialog and
-  `userDefineLangs` loading are not). Markdown uses Lexilla's Markdown lexer instead of the bundled UDL.
-- No Shortcut Mapper, Document Map, Folder as Workspace, Project panels, Compare or auto-updater
-  (Linux distributions update software through their package managers).
-- Regular expressions are ECMAScript (C++11) in documents and PCRE in Function List parsers;
-  Notepad++ uses Boost for both. Most everyday patterns behave identically.
+---
 
 ## Licence
 
-GPL-3.0-or-later, see [LICENSE](LICENSE). The Notepad++ data files are © Don HO and the
-Notepad++ contributors (GPL-3); Scintilla and Lexilla are © Neil Hodgson (their own licence).
-Camelion++ is not affiliated with or endorsed by the Notepad++ project.
+Camelion++ is free software under the **GNU General Public License v3.0 or later**; see [LICENSE](LICENSE).
+
+- It includes data files from Notepad++ (© Don HO and the Notepad++ contributors, GPL-3).
+- Scintilla and Lexilla are © Neil Hodgson, under their own licence (`third_party/*/License.txt`).
