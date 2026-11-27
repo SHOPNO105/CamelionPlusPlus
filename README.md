@@ -125,7 +125,7 @@ Plugins Admin works exactly like the Notepad++ one, from the same JSON format:
    precedence, as in Notepad++'s debug mode. A banner shows, and `file://` URLs are allowed.
    `camelion++ --check-pluginlist` prints which list is used and whether it verified.
 
-The companion repository **[CamPlugin](https://github.com/SHOPNO105/CamPlugin)** (the nppPluginList port) contains `src/pl.linux-x64.json`,
+The companion repository **[CamPlugin/](CamPlugin/)** folder (the nppPluginList port) contains `src/pl.linux-x64.json`,
 `src/pl.linux-arm64.json`, the schema update, the ELF-aware `validator.py`, the CMake build
 and signing of `nppPluginList.so`, and a CI workflow.
 

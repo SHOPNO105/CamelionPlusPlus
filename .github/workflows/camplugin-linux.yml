@@ -1,0 +1,72 @@
+name: CamPlugin_linux
+
+# Linux (Camelion++) counterpart of CI_build.yml:
+# validates src/pl.linux-<arch>.json and builds the signed nppPluginList.so.
+
+# Started by hand for now: the validator downloads the plugin zips from the
+# release of this repository (SHOPNO105/CamelionPlusPlus), which only works once that repository is public.
+# Then change this to:  on: [push, pull_request]
+on: [workflow_dispatch]
+
+jobs:
+  build:
+    defaults:
+      run:
+        working-directory: CamPlugin
+    runs-on: ubuntu-24.04
+
+    permissions:
+      contents: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [x64, arm64]
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Install tools
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake ninja-build openssl
+        if [ "${{ matrix.arch }}" = "arm64" ]; then sudo apt-get install -y gcc-aarch64-linux-gnu; fi
+
+    - name: Install python modules
+      run: pip3 install -r requirements-linux.txt
+
+    - name: Validate json
+      run: python3 validator.py linux-${{ matrix.arch }}
+
+    - name: Write the signing key
+      if: github.event_name == 'push' && github.repository_owner == github.actor
+      env:
+        PLUGINLIST_SIGNING_KEY: ${{ secrets.PLUGINLIST_SIGNING_KEY }}
+      run: |
+        if [ -n "$PLUGINLIST_SIGNING_KEY" ]; then
+          umask 077
+          printf '%s\n' "$PLUGINLIST_SIGNING_KEY" > "$RUNNER_TEMP/signing.pem"
+          echo "SIGNING_ARGS=-DPLUGINLIST_SIGNING_KEY=$RUNNER_TEMP/signing.pem" >> "$GITHUB_ENV"
+        fi
+
+    - name: Build nppPluginList.so
+      run: |
+        CROSS=""
+        if [ "${{ matrix.arch }}" = "arm64" ]; then
+          CROSS="-DCMAKE_SYSTEM_NAME=Linux -DCMAKE_SYSTEM_PROCESSOR=aarch64 -DCMAKE_C_COMPILER=aarch64-linux-gnu-gcc -DCMAKE_ASM_COMPILER=aarch64-linux-gnu-gcc"
+        fi
+        cmake -S linux -B build-linux -G Ninja -DPLUGINLIST_ARCH=${{ matrix.arch }} $CROSS $SIGNING_ARGS
+        cmake --build build-linux
+
+    - name: Remove the signing key
+      if: always()
+      run: rm -f "$RUNNER_TEMP/signing.pem"
+
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: plugin_so_and_list_linux-${{ matrix.arch }}
+        path: |
+          CamPlugin/build-linux/nppPluginList.so
+          CamPlugin/doc/plugin_list_linux-${{ matrix.arch }}.md

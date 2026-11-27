@@ -1,0 +1,10 @@
+# Python modules for validating the Linux (Camelion++) lists: python3 validator.py linux-x64
+attrs==26.1.0
+certifi==2026.10.19
+charset-normalizer==3.5.2
+idna==3.20
+jsonschema==4.25.1
+pyelftools==0.32
+pyrsistent==0.20.0
+requests==2.34.2
+urllib3==2.8.0
