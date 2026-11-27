@@ -1,0 +1,35 @@
+name: build
+
+on: [push, pull_request]
+
+jobs:
+  linux:
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential cmake ninja-build pkg-config libgtk-3-dev \
+             libcurl4-openssl-dev libarchive-dev libssl-dev libtinyxml2-dev nlohmann-json3-dev \
+             g++-aarch64-linux-gnu zip
+    - name: Build
+      run: |
+        cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
+        cmake --build build
+    - name: Smoke test
+      run: |
+        ./build/camelion++ --version
+        ./build/camelion++ --check-pluginlist || true
+    - name: Packages
+      run: |
+        cd build && cpack
+    - name: Plugin release zips
+      run: tools/package-plugins.sh build
+    - uses: actions/upload-artifact@v4
+      with:
+        name: camelion-plus-plus
+        path: |
+          build/*.deb
+          build/*.tar.gz
+          dist/plugins/*.zip
