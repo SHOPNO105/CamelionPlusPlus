@@ -1,0 +1,21 @@
+/* Generated from pluginlist.S.in: embeds the plugin list and its signature as ELF sections. */
+    .section .npp_pluginlist, "a"
+    .globl nppPluginList_json_begin
+    .hidden nppPluginList_json_begin
+nppPluginList_json_begin:
+    .incbin "@PL_JSON@"
+    .globl nppPluginList_json_end
+    .hidden nppPluginList_json_end
+nppPluginList_json_end:
+    .byte 0
+
+    .section .npp_pluginlist_sig, "a"
+    .globl nppPluginList_sig_begin
+    .hidden nppPluginList_sig_begin
+nppPluginList_sig_begin:
+    .incbin "@PL_SIG@"
+    .globl nppPluginList_sig_end
+    .hidden nppPluginList_sig_end
+nppPluginList_sig_end:
+
+    .section .note.GNU-stack, "", %progbits

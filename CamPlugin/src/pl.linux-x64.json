@@ -1,0 +1,40 @@
+{
+	"name": "npp-pluginList",
+	"version": "2.0",
+	"arch": "linux-x64",
+	"npp-plugins": [
+		{
+			"folder-name": "CamConverter",
+			"display-name": "Converter",
+			"version": "1.0.0",
+			"camelion-compatible-versions": "[1.0,]",
+			"id": "83cc8902c1653ff92031534b3801e9ef916e796395728d57dbcef654fae0754d",
+			"repository": "https://github.com/SHOPNO105/CamelionPlusPlus/releases/download/plugins-1.0.0/CamConverter-1.0.0-linux-x64.zip",
+			"description": "ASCII <-> HEX conversion of the selection or of the whole document.\r\nCamelion++ port of the idea behind Notepad++'s bundled NppConverter plugin.",
+			"author": "Camelion++ contributors",
+			"homepage": "https://github.com/SHOPNO105/CamelionPlusPlus"
+		},
+		{
+			"folder-name": "CamDocList",
+			"display-name": "Document List",
+			"version": "1.0.0",
+			"camelion-compatible-versions": "[1.0,]",
+			"id": "3989a39e40e05e5d14223325727ec4c1853f121395062e622b6605f56cc1fbbb",
+			"repository": "https://github.com/SHOPNO105/CamelionPlusPlus/releases/download/plugins-1.0.0/CamDocList-1.0.0-linux-x64.zip",
+			"description": "Side panel listing all open documents; click to switch.\r\nExample of a GTK panel plugin docked with CAMM_ADDPANEL.",
+			"author": "Camelion++ contributors",
+			"homepage": "https://github.com/SHOPNO105/CamelionPlusPlus"
+		},
+		{
+			"folder-name": "CamMimeTools",
+			"display-name": "MIME Tools",
+			"version": "1.0.0",
+			"camelion-compatible-versions": "[1.0,]",
+			"id": "8008ea80c0bd5e507de64675010fa9482938ccfd26280e03dcc5c70c1b6ff9d5",
+			"repository": "https://github.com/SHOPNO105/CamelionPlusPlus/releases/download/plugins-1.0.0/CamMimeTools-1.0.0-linux-x64.zip",
+			"description": "Base64 (encode/decode, by line, without padding), URL percent-encoding and Quoted-printable encoding/decoding.\r\nCamelion++ port of the idea behind Notepad++'s bundled MIME Tools plugin.",
+			"author": "Camelion++ contributors",
+			"homepage": "https://github.com/SHOPNO105/CamelionPlusPlus"
+		}
+	]
+}

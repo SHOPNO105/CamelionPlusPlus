@@ -1,0 +1,49 @@
+.TH CAMELION++ 1 "November 2026" "Camelion++ 1.0.0" "User Commands"
+.SH NAME
+camelion++ \- Notepad++-style source code editor for Linux
+.SH SYNOPSIS
+.B camelion++
+[\fIoptions\fR] [\fIfile\fR[:\fIline\fR[:\fIcol\fR]] ...]
+.SH DESCRIPTION
+Camelion++ is a tabbed source code editor built on Scintilla and Lexilla.
+It reads Notepad++ configuration files (langs.xml, stylers.xml, themes,
+autoCompletion and functionList definitions) and loads Linux plugins
+through a Notepad++-compatible plugin interface. Plugins can be installed
+from a signed nppPluginList with Plugins > Plugins Admin.
+.SH OPTIONS
+.TP
+.BI \-n line
+Go to \fIline\fR.
+.TP
+.BI \-c column
+Go to \fIcolumn\fR.
+.TP
+.BI \-l language
+Open the files with the given language, e.g. \fB\-lpython\fR.
+.TP
+.B \-ro
+Open the files read-only.
+.TP
+.B \-nosession
+Neither restore nor save the session.
+.TP
+.B \-noPlugin
+Do not load any plugin.
+.TP
+.B \-multiInst
+Start a new instance instead of reusing the running one.
+.TP
+.B \-\-check\-pluginlist
+Print the status of the plugin list (source, signature, entries) and exit.
+.SH FILES
+.TP
+.I ~/.config/camelion++/
+config.xml, session.xml, optional langs.xml / stylers.xml, themes/, plugins/Config/
+.TP
+.I ~/.local/share/camelion++/plugins/
+Plugins installed by the user (\fIName\fR/\fIName\fR.so).
+.TP
+.I /usr/lib/camelion++/plugins/
+System-wide plugins and Config/nppPluginList.so.
+.SH LICENSE
+GPL-3.0-or-later.

@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Name=Camelion++
+GenericName=Source Code Editor
+Comment=Notepad++-style source code and text editor
+Exec=camelion++ %F
+Icon=camelion++
+Terminal=false
+Categories=Development;TextEditor;Utility;GTK;
+Keywords=text;editor;code;notepad;scintilla;
+MimeType=text/plain;text/x-csrc;text/x-chdr;text/x-c++src;text/x-c++hdr;text/x-python;text/x-shellscript;text/x-makefile;text/x-java;text/html;text/css;text/xml;application/xml;application/json;application/javascript;text/x-markdown;text/markdown;text/x-sql;text/x-lua;text/x-perl;text/x-php;text/x-ruby;text/x-rust;text/x-go;text/x-csharp;text/x-diff;text/x-patch;text/x-log;text/x-ini;application/x-yaml;
+StartupNotify=true
+StartupWMClass=camelion++

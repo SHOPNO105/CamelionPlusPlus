@@ -1,0 +1,29 @@
+{
+	"name": "npp-pluginList",
+	"version": "2.0",
+	"arch": "linux-arm64",
+	"npp-plugins": [
+		{
+			"folder-name": "CamConverter",
+			"display-name": "Converter",
+			"version": "1.0.0",
+			"camelion-compatible-versions": "[1.0,]",
+			"id": "e9d9aeccb67d2a4473cd33ab064c912dc15c74bea86e3e7c40553995c2c352a4",
+			"repository": "https://github.com/SHOPNO105/CamelionPlusPlus/releases/download/plugins-1.0.0/CamConverter-1.0.0-linux-arm64.zip",
+			"description": "ASCII <-> HEX conversion of the selection or of the whole document.\r\nCamelion++ port of the idea behind Notepad++'s bundled NppConverter plugin.",
+			"author": "Camelion++ contributors",
+			"homepage": "https://github.com/SHOPNO105/CamelionPlusPlus"
+		},
+		{
+			"folder-name": "CamMimeTools",
+			"display-name": "MIME Tools",
+			"version": "1.0.0",
+			"camelion-compatible-versions": "[1.0,]",
+			"id": "b9052a4f01b957fe47ba027b0207fc6228b027055c566090f10d2fdb6e3013ac",
+			"repository": "https://github.com/SHOPNO105/CamelionPlusPlus/releases/download/plugins-1.0.0/CamMimeTools-1.0.0-linux-arm64.zip",
+			"description": "Base64 (encode/decode, by line, without padding), URL percent-encoding and Quoted-printable encoding/decoding.\r\nCamelion++ port of the idea behind Notepad++'s bundled MIME Tools plugin.",
+			"author": "Camelion++ contributors",
+			"homepage": "https://github.com/SHOPNO105/CamelionPlusPlus"
+		}
+	]
+}

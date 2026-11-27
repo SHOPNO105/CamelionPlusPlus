@@ -1,0 +1,39 @@
+#Ignore thumbnails created by Windows
+Thumbs.db
+#Ignore files built by Visual Studio
+*.user
+*.aps
+*.pch
+*.vspscc
+*_i.c
+*_p.c
+*.ncb
+*.suo
+*.bak
+*.cache
+*.ilk
+*.log
+*.sbr
+*.sln
+*.opendb
+*.db
+*.md
+*.slnx
+obj/
+[Dd]ebug*/
+[Rr]elease*/
+_ReSharper*/
+.vs/
+[Bb]in/
+bin64/
+binarm64/
+# keep the documentation even though *.md is ignored above
+!README.md
+!doc/*.md
+# CamPlugin (Linux): build output, validator output, and never any key material
+build-linux/
+linux-x64/
+linux-arm64/
+*.pem
+!*-pub.pem
+*.sig

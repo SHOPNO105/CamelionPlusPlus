@@ -1,0 +1,22 @@
+# Maintainer: SHOPNO105 <https://github.com/SHOPNO105>
+pkgname=camelion-plus-plus
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="Notepad++-style source code editor for Linux (Scintilla/Lexilla, GTK 3)"
+arch=('x86_64' 'aarch64')
+url="https://github.com/SHOPNO105/CamelionPlusPlus"
+license=('GPL-3.0-or-later')
+depends=('gtk3' 'curl' 'libarchive' 'openssl' 'tinyxml2')
+makedepends=('cmake' 'ninja' 'pkgconf' 'nlohmann-json')
+source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/v$pkgver.tar.gz")
+sha256sums=('SKIP')
+
+build() {
+  cmake -S "CamelionPlusPlus-$pkgver" -B build -G Ninja \
+        -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
+  cmake --build build
+}
+
+package() {
+  DESTDIR="$pkgdir" cmake --install build
+}

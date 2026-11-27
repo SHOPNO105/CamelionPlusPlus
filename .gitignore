@@ -1,0 +1,5 @@
+build/
+build-*/
+dist/
+*.pem
+!packaging/keys/*-pub.pem
